@@ -13,9 +13,10 @@ export class AuthController {
     const result = AuthService.login(username, password);
 
     if (result.success && result.user) {
-      (req.session as any).userId = result.user.id;
-      (req.session as any).username = result.user.username;
-      (req.session as any).role = result.user.role;
+      const session = (req as any).session;
+      session.userId = result.user.id;
+      session.username = result.user.username;
+      session.role = result.user.role;
 
       return res.json({
         success: true,
@@ -31,7 +32,7 @@ export class AuthController {
   };
 
   static logout = (req: Request, res: Response) => {
-    req.session.destroy((err: any) => {
+    ((req as any).session as any).destroy((err: Error | null) => {
       if (err) {
         return res.status(500).json({ success: false, message: 'Error logging out' });
       }
@@ -39,17 +40,18 @@ export class AuthController {
     });
   };
 
-  static getSession = (req: AuthRequest, res: Response) => {
-    if (!req.session || !req.session.userId) {
+  static getSession = (req: Request, res: Response) => {
+    const session = (req as any).session;
+    if (!session || !session.userId) {
       return res.status(401).json({ success: false, message: 'Not authenticated' });
     }
 
     return res.json({
       success: true,
       user: {
-        id: req.session.userId,
-        username: req.session.username,
-        role: req.session.role
+        id: session.userId,
+        username: session.username,
+        role: session.role
       }
     });
   };

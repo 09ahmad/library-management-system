@@ -1,14 +1,14 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from '../models/database';
-import { AuthRequest } from '../middleware/auth';
+import { BookAvailability } from '../models/types';
 
 export class BookController {
-  static getAllBooks = (req: AuthRequest, res: Response) => {
+  static getAllBooks = (req: Request, res: Response) => {
     const books = db.getAllBooks();
     res.json({ success: true, data: books });
   };
 
-  static searchBooks = (req: AuthRequest, res: Response) => {
+  static searchBooks = (req: Request, res: Response) => {
     const { bookName, author, category } = req.query;
 
     if (!bookName && !author && !category) {
@@ -27,7 +27,7 @@ export class BookController {
     res.json({ success: true, data: results });
   };
 
-  static getBookBySerial = (req: AuthRequest, res: Response) => {
+  static getBookBySerial = (req: Request, res: Response) => {
     const { serialNo } = req.params;
     const book = db.findBookBySerial(serialNo);
 
@@ -38,7 +38,7 @@ export class BookController {
     res.json({ success: true, data: book });
   };
 
-  static addBook = (req: AuthRequest, res: Response) => {
+  static addBook = (req: Request, res: Response) => {
     const { bookName, author, category, serialNo } = req.body;
 
     if (!bookName || !author || !category || !serialNo) {
@@ -61,14 +61,14 @@ export class BookController {
       author,
       category,
       serialNo,
-      availability: 'Available' as const
+      availability: BookAvailability.AVAILABLE
     };
 
     db.addBook(newBook);
     res.json({ success: true, data: newBook, message: 'Book added successfully' });
   };
 
-  static updateBook = (req: AuthRequest, res: Response) => {
+  static updateBook = (req: Request, res: Response) => {
     const { serialNo } = req.params;
     const { bookName, author, category } = req.body;
 

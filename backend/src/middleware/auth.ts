@@ -8,14 +8,14 @@ export interface AuthRequest extends Request {
   };
 }
 
-export const requireAuth = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const requireAuth = (req: Request, res: Response, next: NextFunction) => {
   if (!req.session || !req.session.userId) {
     return res.status(401).json({ success: false, message: 'Unauthorized' });
   }
   next();
 };
 
-export const requireAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
+export const requireAdmin = (req: Request, res: Response, next: NextFunction) => {
   if (!req.session || !req.session.userId) {
     return res.status(401).json({ success: false, message: 'Unauthorized' });
   }

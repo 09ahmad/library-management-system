@@ -1,10 +1,9 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from '../models/database';
-import { AuthRequest } from '../middleware/auth';
 import { BookAvailability } from '../models/types';
 
 export class IssueController {
-  static createIssue = (req: AuthRequest, res: Response) => {
+  static createIssue = (req: Request, res: Response) => {
     const { membershipNumber, bookName, serialNo, issueDate } = req.body;
 
     if (!membershipNumber || !bookName || !serialNo) {
@@ -51,12 +50,12 @@ export class IssueController {
     res.json({ success: true, data: newIssue, message: 'Book issued successfully' });
   };
 
-  static getActiveIssues = (req: AuthRequest, res: Response) => {
+  static getActiveIssues = (req: Request, res: Response) => {
     const issues = db.getActiveIssues();
     res.json({ success: true, data: issues });
   };
 
-  static getOverdueIssues = (req: AuthRequest, res: Response) => {
+  static getOverdueIssues = (req: Request, res: Response) => {
     const issues = db.getOverdueIssues();
     const today = new Date().toISOString().split('T')[0];
     
@@ -78,7 +77,7 @@ export class IssueController {
     res.json({ success: true, data: overdueIssues });
   };
 
-  static returnBook = (req: AuthRequest, res: Response) => {
+  static returnBook = (req: Request, res: Response) => {
     const { serialNo, returnDate, remarks } = req.body;
 
     if (!serialNo || !returnDate) {
@@ -105,7 +104,7 @@ export class IssueController {
     });
   };
 
-  static getAllIssues = (req: AuthRequest, res: Response) => {
+  static getAllIssues = (req: Request, res: Response) => {
     const issues = db.getAllIssues();
     res.json({ success: true, data: issues });
   };

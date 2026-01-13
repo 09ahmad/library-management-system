@@ -1,11 +1,10 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from '../models/database';
 import { users } from '../models/database';
-import { AuthRequest } from '../middleware/auth';
 import { User, UserRole, MemberStatus } from '../models/types';
 
 export class UserController {
-  static getAllUsers = (req: AuthRequest, res: Response) => {
+  static getAllUsers = (req: Request, res: Response) => {
     // Return users without passwords
     const usersList = users.map(u => ({
       id: u.id,
@@ -16,7 +15,7 @@ export class UserController {
     res.json({ success: true, data: usersList });
   };
 
-  static addUser = (req: AuthRequest, res: Response) => {
+  static addUser = (req: Request, res: Response) => {
     const { userName, role, status } = req.body;
 
     if (!userName || !role || !status) {
@@ -54,7 +53,7 @@ export class UserController {
     });
   };
 
-  static updateUser = (req: AuthRequest, res: Response) => {
+  static updateUser = (req: Request, res: Response) => {
     const { userId } = req.params;
     const { userName, role, status } = req.body;
 

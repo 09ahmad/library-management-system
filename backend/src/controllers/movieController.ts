@@ -1,14 +1,14 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from '../models/database';
-import { AuthRequest } from '../middleware/auth';
+import { BookAvailability } from '../models/types';
 
 export class MovieController {
-  static getAllMovies = (req: AuthRequest, res: Response) => {
+  static getAllMovies = (req: Request, res: Response) => {
     const movies = db.getAllMovies();
     res.json({ success: true, data: movies });
   };
 
-  static addMovie = (req: AuthRequest, res: Response) => {
+  static addMovie = (req: Request, res: Response) => {
     const { movieName, director, category, serialNo } = req.body;
 
     if (!movieName || !director || !category || !serialNo) {
@@ -31,14 +31,14 @@ export class MovieController {
       director,
       category,
       serialNo,
-      availability: 'Available' as const
+      availability: BookAvailability.AVAILABLE
     };
 
     db.addMovie(newMovie);
     res.json({ success: true, data: newMovie, message: 'Movie added successfully' });
   };
 
-  static updateMovie = (req: AuthRequest, res: Response) => {
+  static updateMovie = (req: Request, res: Response) => {
     const { serialNo } = req.params;
     const { movieName, director, category } = req.body;
 

@@ -1,10 +1,9 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from '../models/database';
-import { AuthRequest } from '../middleware/auth';
 import { PaymentMode } from '../models/types';
 
 export class FineController {
-  static payFine = (req: AuthRequest, res: Response) => {
+  static payFine = (req: Request, res: Response) => {
     const { membershipNumber, bookName, fineAmount, paymentMode } = req.body;
 
     if (!membershipNumber || !bookName || !fineAmount || !paymentMode) {

@@ -1,15 +1,14 @@
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { db } from '../models/database';
-import { AuthRequest } from '../middleware/auth';
 import { MemberStatus } from '../models/types';
 
 export class MemberController {
-  static getAllMembers = (req: AuthRequest, res: Response) => {
+  static getAllMembers = (req: Request, res: Response) => {
     const members = db.getAllMembers();
     res.json({ success: true, data: members });
   };
 
-  static getMemberByNumber = (req: AuthRequest, res: Response) => {
+  static getMemberByNumber = (req: Request, res: Response) => {
     const { membershipNumber } = req.params;
     const member = db.findMemberByNumber(membershipNumber);
 
@@ -20,7 +19,7 @@ export class MemberController {
     res.json({ success: true, data: member });
   };
 
-  static addMember = (req: AuthRequest, res: Response) => {
+  static addMember = (req: Request, res: Response) => {
     const { memberName, address, phoneNo, startDate } = req.body;
 
     if (!memberName || !startDate) {
@@ -52,7 +51,7 @@ export class MemberController {
     res.json({ success: true, data: newMember, message: 'Member added successfully' });
   };
 
-  static updateMember = (req: AuthRequest, res: Response) => {
+  static updateMember = (req: Request, res: Response) => {
     const { membershipNumber } = req.params;
     const { extendMembership } = req.body;
 
