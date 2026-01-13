@@ -29,7 +29,7 @@ const IssueRequest: React.FC = () => {
         memberService.getAll(),
         bookService.getAll()
       ]);
-      if (membersRes.success) setMembers(membersRes.data.filter((m: any) => m.status === 'Active')));
+      if (membersRes.success) setMembers(membersRes.data.filter((m: any) => m.status === 'Active'));
       if (booksRes.success) setBooks(booksRes.data.filter((b: any) => b.availability === 'Available'));
     } catch (error: any) {
       setError(error.message);
